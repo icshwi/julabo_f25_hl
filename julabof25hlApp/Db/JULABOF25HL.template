@@ -1,0 +1,514 @@
+
+
+###MACROS#############
+
+#  P        PV name
+#  PORT     connection port
+#  TEMPSCAN Set SCAN field for selected records (.1 second, .2 second, .5 second
+#  , 1 second, 2 second, 5 second, 10 second, I/O Intr, Event, or Passive.)
+#  JULABO communication might have problems on scans at 1 s or lower!!(it seem)
+#  SETPNAME 3 setpoints can be preset (1-3) and shifted between. Redundant, TBR?
+#  SETPNR   corresponding number used (0-2) for the above mentioned SETPNAME
+
+######################
+###RECORDS#############
+
+# Record used to disable polling on records setup with this in the SDIS field
+
+record(bo, "$(P):DISABLE_POLL") {
+    field(DESC, "Disable polling")
+    field(PINI, "YES")
+    field(VAL, "0")
+    field(OMSL, "supervisory")
+    field(ZNAM, "Poll Enabled")
+    field(ONAM, "Poll Disabled")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "MAJOR")
+}
+
+############Temperature related reads and writes######################
+
+
+# Read the temeperature of the cooling bath
+# IN_PV_00 command
+
+record(ai, "$(P):TEMP") {
+    field(DTYP, "stream")
+    field(SDIS, "$(P):DISABLE_POLL")
+    field(DESC, "Bath temerature")
+    field(INP, "@JULABO_F25HL.proto readInternalTemp() $(PORT)")
+    field(SCAN, "$(TEMPSCAN) second")
+    field(PREC, "2")
+    field(EGU, "C")
+    field(HHSV,"MAJOR")
+    field(HSV, "MINOR")
+    field(LSV, "MINOR")
+    field(LLSV,"MAJOR")
+    field(HYST,"1.0")
+    field(HIHI,"99")
+    field(HIGH,"95")
+    field(LOW,"5")
+    field(LOLO,"1")
+    field(ADEL, "$(ADEL=0.1)")
+    field(MDEL, "$(MDEL=0.1)")
+    field(PINI, "YES")
+
+}
+
+# PV to disable the external sensor polling when it is not connected.
+record(bo, "$(P):DISABLE_EXT") {
+    field(DESC, "Disable EXT sensor polling")
+    field(PINI, "YES")
+    field(VAL, "0")
+    field(OMSL, "supervisory")
+    field(ZNAM, "Poll Enabled")
+    field(ONAM, "Poll Disabled")
+    field(ZSV, "NO_ALARM")
+    field(OSV, "MAJOR")
+}
+
+
+# Read the temeperature of the external pt100 sensor
+# IN_PV_02 command
+  #NOW disabled. ned to be set not to run if external not selected
+record(ai, "$(P):EXTT") {
+    field(DTYP, "stream")
+    field(SDIS, "$(P):DISABLE_EXT")
+    field(DESC, "External pt100 temerature")
+    field(INP, "@JULABO_F25HL.proto readExternalTemp() $(PORT)")
+   field(SCAN, "$(TEMPSCAN) second")
+    field(PREC, "2")
+    field(EGU, "C")
+    field(HHSV,"MAJOR")
+    field(HSV, "MINOR")
+    field(LSV, "MINOR")
+    field(LLSV,"MAJOR")
+    field(HYST,"1.0")
+    field(HIHI,"99")
+    field(HIGH,"95")
+    field(LOW,"5")
+    field(LOLO,"1")
+    field(ADEL, "$(ADEL=0.1)")
+    field(MDEL, "$(MDEL=0.1)")
+}
+
+# Read the temeperature of the safety sensor
+# IN_PV_03 command
+
+record(ai, "$(P):TSAFE") {
+    field(DTYP, "stream")
+    field(SDIS, "$(P):DISABLE_POLL")
+    field(DESC, "Safety sensor temerature")
+    field(INP, "@JULABO_F25HL.proto readSafetyTemp() $(PORT)")
+    field(SCAN, "$(TEMPSCAN) second")
+    field(PREC, "2")
+    field(EGU, "C")
+    field(ADEL, "$(ADEL=0.5)")
+    field(MDEL, "$(MDEL=0.1)")
+
+    info(INTEREST, "LOW") #Part of EPICS. ISIS use as way to provide parameter importance
+
+
+# info(autosaveFields, "HIHI HIGH LOW LOLO ADEL MDEL")
+# info(archive, "Monitor, 00:00:01, VAL")   
+}
+
+
+
+# Read back the setpoint(1-3)  value. Expanded to 3 records with macro and substitution file.
+# IN_SP_0X command (X=0,1,2)
+
+record(ai, "$(P):TEMP:SP$(SETPNAME):RBV")
+{
+    field(SCAN, "$(TEMPSCAN) second")
+    field(DTYP, "stream")
+    field(INP,  "@JULABO_F25HL.proto readSetTemp($(SETPNR)) $(PORT)")
+    field(PREC, "1")
+    field(EGU,  "C")
+    field(SDIS, "$(P):DISABLE_POLL")
+    field(DESC, "Temperature setpoint readback")
+    field(PINI, "YES")
+
+    info(INTEREST, "HIGH")
+}
+
+# Set the (current?) temperature setpoint value
+# OUT_SP_0X (X= 0,1,2)
+
+record(ao, "$(P):TEMP:SP$(SETPNAME)")
+{
+    field(SCAN, "$(TEMPSCAN) second")
+    field(DTYP, "stream")
+    field(OUT, "@JULABO_F25HL.proto writeTemp($(SETPNR)) $(PORT)")
+    field(VAL, "20")
+    field(PREC, "1")
+    field(EGU, "C")
+    field(DESC, "Write temperature setpoint")
+    field(DRVL, "1") #Limit used by NICOS currently!
+    field(DRVH, "97")
+    field(LOPR, "5")
+    field(HOPR, "95")
+    field(PINI, "YES")
+
+    info(INTEREST, "HIGH")
+}
+
+# Set the which temperature setpoint to use (i.e. set which pre-set temperature 1-3 is in use..)
+# OUT_MODE_01 X (X=0,1,2)
+
+record(mbbo, "$(P):SP:SEL") {
+    field(DTYP, "stream")
+    field(DESC, "Set active temperature setpoint 1-3")
+    field(OUT, "@JULABO_F25HL.proto setSetpointUsed() $(PORT)")
+    field(ZRST, "SP1")
+    field(ONST, "SP2")
+    field(TWST, "SP3")
+    field(PINI, "YES")
+}
+
+# Readback value of setpoint used
+# IN_MODE_01
+record(mbbi, "$(P):SP:SEL:RBV") {
+    field(DTYP, "stream")
+    field(SCAN, "$(TEMPSCAN) second")
+    field(DESC, "Set active temperature setpoint 1-3")
+    field(INP, "@JULABO_F25HL.proto getSetpointUsed() $(PORT)")
+    field(ZRST, "SP1")
+    field(ONST, "SP2")
+    field(TWST, "SP3")
+    field(PINI, "YES")
+}
+
+############################################################
+################ GENERAL SETTINGS ################################
+
+# Set JULABO in run mode/Start the circulator
+# OUT_MODE_05 X (X=0,1)
+record(bo, "$(P):MODE:SP")
+{
+    field(DTYP, "stream")
+    field(DESC, "Set run mode")
+    field(OUT, "@JULABO_F25HL.proto setRunMode() $(PORT)")
+    field(SCAN, "Passive")
+    field(VAL, "0")
+    field(PINI, "YES")
+
+    info(INTEREST, "HIGH")
+}
+
+# Read JULABO mode (circulation/running on/off)
+# IN_MODE_05
+record (bi, "$(P):MODE")
+{
+    field(DTYP, "stream")
+    field(DESC, "Read run mode on/off")
+    field(SCAN, "$(TEMPSCAN) second")
+    field(INP, "@JULABO_F25HL.proto getRunMode() $(PORT)")
+    field(ZNAM, "OFF")
+    field(ONAM, "ON")
+    field(PINI, "YES")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Read the heater power
+# IN_PV_01
+record(ai, "$(P):POWER") {
+    field(DTYP, "stream")
+    field(DESC, "Read heater power")
+    field(INP , "@JULABO_F25HL.proto getHeaterPower() $(PORT)")
+    field(SCAN, "5 second")
+    field(EGU , "%")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Set external (or internal) temp sensor
+# OUT_MODE_04 X (X=0,1)
+record(bo, "$(P):EXTSENS:SP")
+{
+  #NOW disabled. need to be set not to run if external not selected
+    field(DTYP, "stream")
+    field(DESC, "Set use external sensor (or internal)")
+    field(OUT,  "@JULABO_F25HL.proto setExternalSensor() $(PORT)")
+    field(SCAN, "5 second")
+    field(ZNAM, "OFF")
+    field(ONAM, "ON")
+    field(SDIS, "$(P):DISABLE_EXT")
+}
+
+# Read back external (or internal) temp sensor
+# IN_MODE_04
+record(bi, "$(P):EXTSENS") ##should reall be EXTSENS:SP:RBV...
+{
+  #NOW disabled. ned to be set not to run if external not selected
+    field(DTYP, "stream")
+    field(DESC, "Read back value on set external sensor")
+    field(SCAN, "$(TEMPSCAN) second")
+    field(INP,  "@JULABO_F25HL.proto getExternalSensor() $(PORT)")
+    field(ZNAM, "OFF")
+    field(ONAM, "ON")
+    field(SDIS, "$(P):DISABLE_EXT")
+}
+
+#####################################################################################
+############################### PID SETTINGS ########################################
+
+# Read internal PID P Value
+# IN_PAR_06
+record(ai, "$(P):INTP")
+{
+    field(DESC, "P for internal control")
+    field(SCAN, "2 second")
+    field(DTYP, "stream")
+    field(INP,  "@JULABO_F25HL.proto getInternalProportional $(PORT)")
+    field(PREC, "1")
+    field(EGU,  "")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Read internal PID I Value
+# IN_PAR_07
+record(ai, "$(P):INTI") 
+{
+    field(DESC, "I for internal control")
+    field(SCAN, "2 second")
+    field(DTYP, "stream")
+    field(INP,  "@JULABO_F25HL.proto getInternalIntegral $(PORT)")
+    field(PREC, "1")
+    field(EGU,  "")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Read internal PID D Value
+# IN_PAR_08
+record(ai, "$(P):INTD") 
+{
+    field(DESC, "D for internal control")
+    field(SCAN, "2 second")
+    field(DTYP, "stream")
+    field(INP,  "@JULABO_F25HL.proto getInternalDerivative $(PORT)")
+    field(PREC, "1")
+    field(EGU,  "")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Write internal PID P values
+# OUT_PAR_06
+record(ao, "$(P):INTP:SP") 
+{
+    field(DESC, "P for internal control - Set Point")
+    field(SCAN, "Passive")
+    field(DTYP, "stream")
+    field(OUT,  "@JULABO_F25HL.proto setInternalProportional $(PORT)")
+    field(EGU, "")
+    field(PREC, "1")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Write internal PID I values
+# OUT_PAR_07
+record(ao, "$(P):INTI:SP") 
+{
+    field(DESC, "I for internal control - Set Point")
+    field(SCAN, "Passive")
+    field(DTYP, "stream")
+    field(OUT,  "@JULABO_F25HL.proto setInternalIntegral $(PORT)")
+    field(EGU, "")
+    field(PREC, "1")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Write internal PID D values
+# OUT_PAR_08
+record(ao, "$(P):INTD:SP") 
+{
+    field(DESC, "D for internal control - Set Point")
+    field(SCAN, "Passive")
+    field(DTYP, "stream")
+    field(OUT,  "@JULABO_F25HL.proto setInternalDerivative $(PORT)")
+    field(EGU, "")
+    field(PREC, "1")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Read external PID P Values
+# IN_PAR_09
+
+record(ai, "$(P):EXTP") 
+{
+    field(DESC, "P for external control")
+    field(SCAN, "5 second")
+    field(DTYP, "stream")
+    field(INP,  "@JULABO_F25HL.proto getExternalProportional $(PORT)")
+    field(PREC, "1")
+    field(EGU,  "")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Read external PID I Values
+# IN_PAR_10
+record(ai, "$(P):EXTI") 
+{
+    field(DESC, "I for external control")
+    field(SCAN, "5 second")
+    field(DTYP, "stream")
+    field(INP,  "@JULABO_F25HL.proto getExternalIntegral $(PORT)")
+    field(PREC, "1")
+    field(EGU,  "")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Read external PID D Values
+# IN_PAR_11
+record(ai, "$(P):EXTD") 
+{
+    field(DESC, "D for external control")
+    field(SCAN, "5 second")
+    field(DTYP, "stream")
+    field(INP,  "@JULABO_F25HL.proto getExternalDerivative $(PORT)")
+    field(PREC, "1")
+    field(EGU,  "")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Write external PID P values
+# OUT_PAR_09
+record(ao, "$(P):EXTP:SP") 
+{
+    field(DESC, "P for external control - Set Point")
+    field(SCAN, "Passive")
+    field(DTYP, "stream")
+    field(OUT,  "@JULABO_F25HL.proto setExternalProportional $(PORT)")
+    field(EGU, "")
+    field(PREC, "1")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Write external PID I values
+# OUT_PAR_10
+record(ao, "$(P):EXTI:SP") 
+{
+    field(DESC, "I for external control - Set Point")
+    field(SCAN, "Passive")
+    field(DTYP, "stream")
+    field(OUT,  "@JULABO_F25HL.proto setExternalIntegral $(PORT)")
+    field(EGU, "")
+    field(PREC, "1")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Write external PID D values
+# OUT_PAR_11
+record(ao, "$(P):EXTD:SP") 
+{
+    field(DESC, "D external control - Set Point")
+    field(SCAN, "Passive")
+    field(DTYP, "stream")
+    field(OUT,  "@JULABO_F25HL.proto setExternalDerivative $(PORT)")
+    field(EGU, "")
+    field(PREC, "1")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+
+#####################################################################################
+###################################### LIMITS #######################################
+
+# Set high temp warning limit
+# OUT_SP_03
+record (ao, "$(P):HILIMIT:SP")
+{
+    field(DTYP, "stream")
+    field(SCAN, "Passive")
+    field(OUT, "@JULABO_F25HL.proto setHighTempLimit() $(PORT)")
+    field(DESC, "Set JULABO high temperature limit")
+    field(DRVL, "1")
+    field(DRVH, "97")
+    field(LOPR, "5")
+    field(HOPR, "95")
+}
+
+# Set low temp warning limit
+# OUT_SP_04
+record (ao, "$(P):LOWLIMIT:SP")
+{
+    field(DTYP, "stream")
+    field(SCAN, "Passive")
+    field(OUT, "@JULABO_F25HL.proto setLowTempLimit() $(PORT)")
+    field(DESC, "Set JULABO low temperature limit")
+    field(DRVL, "1")
+    field(DRVH, "97")
+    field(LOPR, "5")
+    field(HOPR, "95")
+}
+
+# Read back high temp warning limit
+# IN_SP_03
+record (ai, "$(P):HILIMIT")
+{
+    field(DTYP, "stream")
+    field(SCAN, "5 second")
+    field(INP, "@JULABO_F25HL.proto getHighTempLimit() $(PORT)")
+    field(DESC, "Read back JULABO high temperature limit")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Read back low temp warning limit
+# IN_SP_04
+record (ai, "$(P):LOWLIMIT")
+{
+    field(DTYP, "stream")
+    field(SCAN, "5 second")
+    field(INP, "@JULABO_F25HL.proto getLowTempLimit() $(PORT)")
+    field(DESC, "Read back JULABO low temperature limit")
+    field(SDIS, "$(P):DISABLE_POLL")
+}
+
+#####################################################################################
+################################## STATUS AND VERSION ###############################
+ 
+# Read the STATUS and/or ERROR messages (total 2 records for reading, continued below)
+record(longin,"$(P):STATUS") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE_POLL")
+  field(DESC, "Read STATUS/ERROR msg number")
+  field(INP,  "@JULABO_F25HL.proto getStatusInt() $(PORT)")
+  field(SCAN, "10 second")
+  field(PINI, "YES")
+  field(LSV, "MINOR")
+  field(LOW,"-1")
+  field(SDIS, "$(P):DISABLE_POLL")
+}
+
+# Continued Read the STATUS and/or ERROR messages Continued! Reading the String message
+record(stringin, "$(P):STATUSc") {
+   field(DTYP, "stream")
+   field(DESC, "Read STATUS/ERROR msg text") #gets this from the proto funct to above record!
+   field(INP,  "@JULABO_F25HL.proto getStatusStr() $(PORT)")
+   field(SCAN, "I/O Intr")
+}
+
+# Continued Read the STATUS and/or ERROR messages Continued! Reading the String message
+record(stringin, "$(P):STATUScc") {
+   field(DTYP, "stream")
+   field(DESC, "Read STATUS/ERROR msg text") #gets this from the proto funct to above record!
+   field(INP,  "@JULABO_F25HL.proto getStatusStr2() $(PORT)")
+   field(SCAN, "I/O Intr")
+}
+ 
+# Read the software version
+record(stringin, "$(P):VERSION") {
+    field(PINI, "YES")
+    field(DTYP, "stream")
+    field(SDIS, "$(P):DISABLE_POLL")
+    field(DESC, "Read software version number")
+    field(INP, "@JULABO_F25HL.proto getVersion() $(PORT)")
+    field(SCAN, "10 second")
+}
+
+
+
+
+
+
+
+

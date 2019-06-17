@@ -1,0 +1,12 @@
+
+
+#For setpoint 1 (0)
+#For setpoint 2 (1)
+#For setpoint 3 (2)
+file JULABOF25HL.template
+{
+  pattern {TEMPSCAN, SETPNAME, SETPNR}
+	  {2       , 1       ,      0}
+          {2       , 2       ,      1}
+          {2       , 3       ,      2}
+}

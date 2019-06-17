@@ -1,0 +1,299 @@
+##################################################
+#
+# Protocol File
+#
+# Protocol file for JULABO F25-HL
+# ESS
+#
+# ESS ... .... .. .... ....
+# Add more commands.
+# 
+##################################################
+
+
+##################################################
+# General Settings
+##################################################
+
+#InTerminator = "\r";
+InTerminator = "\r\n";
+OutTerminator = "\r";
+
+ReplyTimeout = 1000;
+#ReadTimeout =  300;
+
+
+###################################Temperature related reads and writes###########################
+
+
+#// Read temperature of the fluid bath 
+readInternalTemp {
+
+   out "IN_PV_00";
+   in "%f"; 
+}
+
+#// Read temperature of the external pt100 sensor
+readExternalTemp {
+
+   out "IN_PV_02";
+   in "%f";
+   wait 20;
+}
+
+#// Read temperature of safety setting
+readSafetyTemp {
+
+   out "IN_PV_03";
+   in "%f";
+   wait 20;
+}
+
+#// Reads the temperature to the specified setpoint, 0-2(Nr)->1-3(Name)
+readSetTemp {
+
+    out "IN_SP_0\$1";
+    in "%f";
+    ExtraInput = Ignore;
+    wait 20;
+}
+
+#// Writes the temperature to the specified setpoint, 0-2(Nr)->1-3(Name)
+writeTemp{
+
+    out"OUT_SP_0\$1 %.1f";
+    wait 20;
+}
+
+#// Set setpoint temperature used 1-3 with values 0-2 (value 0 sets setpoint 1...)!
+setSetpointUsed {
+
+   out "OUT_MODE_01 %i";
+   wait 50;
+  # @init { getSETP; }
+}
+
+#// Read back setpoint temperature used 1-3 with values 0-2 (value 0 sets setpoint 1...)!
+getSetpointUsed {
+
+   out "IN_MODE_01";
+   in "%i";
+   wait 20;
+  # @init { getSETP; }
+}
+
+#########################################################
+
+
+# /// Read heating power % 
+getHeaterPower {
+
+   out "IN_PV_01";
+   in "%f";
+   wait 20;
+}
+
+#//Set run mode (i.e. circulating on/off)
+setRunMode
+{
+#   out "OUT_MODE_05 %{0|1}"; #seem to NOT work, not sure how/why..
+
+    out "OUT_MODE_05 %i";
+    wait 20;
+}
+
+#// Readback mode
+getRunMode
+{
+
+    out "IN_MODE_05";
+    in "%i";
+    wait 20;
+}
+
+#// Select external sensor (0=External, 1=Iternal)
+
+setExternalSensor
+{
+    out "OUT_MODE_04 %i";
+    wait 20;
+}
+
+
+#// Readback external sensor
+getExternalSensor
+{
+
+    out "IN_MODE_04";
+    in "%i";
+    wait 20;
+}
+
+##################### PID SETTINGS ###############################
+# Read Internal PID Parameters #
+
+# Read internal P parameter
+# Xp in Julabo speak
+getInternalProportional
+{
+    out "IN_PAR_06";
+    in "%f";
+    ExtraInput = Ignore;
+}
+
+# Read internal I parameter
+# Tn in Julabo speak
+getInternalIntegral
+{
+    out "IN_PAR_07";
+    in "%f";
+    ExtraInput = Ignore;
+}
+
+# Read internal D parameter
+# Tv in Julabo speak
+getInternalDerivative
+{
+    out "IN_PAR_08";
+    in "%f";
+    ExtraInput = Ignore;
+}
+
+# Write Internal PID Parameters #
+
+# Write internal P parameter (0.1 ... 99.9)
+# Xp in Julabo speak
+setInternalProportional
+{
+    out "OUT_PAR_06 %.1f";
+}
+
+# Write internal I parameter (3 ... 9999)
+# Tn in Julabo speak
+setInternalIntegral
+{
+    out "OUT_PAR_07 %d";
+}
+
+# Write internal D parameter (0 ... 999)
+# Tv in Julabo speak
+setInternalDerivative
+{
+    out "OUT_PAR_08 %d";
+}
+
+# Read External PID Parameters #
+
+# Read external P parameter
+# Xp in Julabo speak
+getExternalProportional
+{
+    out "IN_PAR_09";
+    in "%f";
+    ExtraInput = Ignore;
+}
+
+# Read external I parameter
+# Tn in Julabo speak
+getExternalIntegral
+{
+    out "IN_PAR_11";
+    in "%f";
+    ExtraInput = Ignore;
+}
+
+# Read external D parameter
+# Tv in Julabo speak
+getExternalDerivative
+{
+    out "IN_PAR_12";
+    in "%f";
+    ExtraInput = Ignore;
+}
+
+# Write External PID Parameters #
+
+# Write external P parameter (0.1 ... 99.9)
+# Xp in Julabo speak
+setExternalProportional
+{
+    out "OUT_PAR_09 %.1f";
+}
+
+# Write external I parameter (3 ... 9999)
+# Tn in Julabo speak
+setExternalIntegral
+{
+    out "OUT_PAR_11 %d";
+}
+
+# Write external D parameter (0 ... 999)
+# Tv in Julabo speak
+setExternalDerivative
+{
+    out "OUT_PAR_12 %d";
+}
+
+################## LIMITS #######################################
+
+#// Set the JULABO high temperature limit
+setHighTempLimit
+{
+    out "OUT_SP_03 %.2f";
+}
+
+#// Set the JULABO low temperature limit
+
+setLowTempLimit
+{
+    out "OUT_SP_04 %.2f";
+}
+
+#// Read back the JULABO high temperature limit
+getHighTempLimit
+{
+    out "IN_SP_03";
+    in  "%f";
+}
+
+#// Read back the JULABO low temperature limit
+
+getLowTempLimit
+{
+    out "IN_SP_04";
+    in  "%f";
+}
+
+################ STATUS AND VERSION ###############################
+
+#// Read the Status. Status and ERROR messages need to be read into 3 records
+#// First the error number is read, poitive or negative.
+#// Second the first 39 char (max for stringin) is read
+#// Finally the potentially trailing 39 chars is read  
+getStatusInt {
+   out "STATUS";
+   in "%d %*39c%*39c";
+   #Stringen continues in section below (by I/O Intr for scan in record)
+}
+
+#//Catching the rest of the string from function above
+getStatusStr{
+    #in "%*d %#s"; #not sufficient, leaves part of message unread if >40 char! 
+    in "%*d %39c%*39c";
+}
+
+#//Catching the rest of the string from function above
+getStatusStr2{
+    in "%*d %*39c%39c";
+    ExtraInput = Ignore;
+}
+
+#// Read the Software version 
+getVersion {
+   out "VERSION";
+   in "%#s"; 
+   ExtraInput = Ignore;
+}
+
+
+

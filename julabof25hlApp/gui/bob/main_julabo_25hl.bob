@@ -1,0 +1,1065 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<display version="2.0.0">
+  <name>Julabo 25HL main</name>
+  <macros>
+    <PREFIX>UTG-SES-FLUC:WTctrl-JULABO-001</PREFIX>
+  </macros>
+  <widget type="rectangle" version="2.0.0">
+    <name>Title banner</name>
+    <class>TITLE-BAR</class>
+    <x use_class="true">0</x>
+    <y use_class="true">0</y>
+    <width>800</width>
+    <height use_class="true">50</height>
+    <line_width use_class="true">0</line_width>
+    <background_color use_class="true">
+      <color name="PRIMARY-HEADER-BACKGROUND" red="151" green="188" blue="202">
+      </color>
+    </background_color>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Title</name>
+    <text>$(PREFIX)</text>
+    <x>10</x>
+    <width>430</width>
+    <height>40</height>
+    <font>
+      <font family="Source Sans Pro" style="BOLD_ITALIC" size="28.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color name="HEADER-TEXT" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <wrap_words>false</wrap_words>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Subtitle</name>
+    <text>JULABO F25 HL cooler &amp; heater circulator</text>
+    <x>440</x>
+    <y>20</y>
+    <width>350</width>
+    <height>30</height>
+    <font>
+      <font family="Source Sans Pro" style="BOLD_ITALIC" size="18.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color name="HEADER-TEXT" red="0" green="0" blue="0">
+      </color>
+    </foreground_color>
+    <horizontal_alignment>2</horizontal_alignment>
+    <vertical_alignment>2</vertical_alignment>
+    <wrap_words>false</wrap_words>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>grpControl</name>
+    <x>10</x>
+    <y>60</y>
+    <width>780</width>
+    <height>530</height>
+    <style>3</style>
+    <transparent>true</transparent>
+    <widget type="rectangle" version="2.0.0">
+      <name>recControl</name>
+      <y>30</y>
+      <width>780</width>
+      <height>500</height>
+      <line_color>
+        <color name="GROUP-BORDER" red="150" green="155" blue="151">
+        </color>
+      </line_color>
+      <background_color>
+        <color name="GROUP-BACKGROUND" red="200" green="205" blue="201">
+        </color>
+      </background_color>
+    </widget>
+    <widget type="rectangle" version="2.0.0">
+      <name>recSubHeaderDown</name>
+      <y>10</y>
+      <width>780</width>
+      <line_width>0</line_width>
+      <background_color>
+        <color name="GROUP-BORDER" red="150" green="155" blue="151">
+        </color>
+      </background_color>
+    </widget>
+    <widget type="rectangle" version="2.0.0">
+      <name>recSubHeaderUp</name>
+      <width>780</width>
+      <height>30</height>
+      <line_width>0</line_width>
+      <background_color>
+        <color name="GROUP-BORDER" red="150" green="155" blue="151">
+        </color>
+      </background_color>
+      <corner_width>10</corner_width>
+      <corner_height>10</corner_height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>grpTitleControl</name>
+      <text>Temperature control</text>
+      <x>10</x>
+      <width>760</width>
+      <height>30</height>
+      <font>
+        <font family="Source Sans Pro" style="BOLD_ITALIC" size="18.0">
+        </font>
+      </font>
+      <horizontal_alignment>1</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="databrowser" version="2.0.0">
+      <name>dbrowserJulaboTemp</name>
+      <file>graphs/julabo25hl_dataBrowser.plt</file>
+      <x>10</x>
+      <y>150</y>
+      <width>410</width>
+      <height>260</height>
+      <show_toolbar>false</show_toolbar>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>lblSetpoint</name>
+      <text>Setpoint:</text>
+      <x>10</x>
+      <y>66</y>
+      <width>110</width>
+      <font>
+        <font family="Source Sans Pro" style="BOLD" size="14.0">
+        </font>
+      </font>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>lblMode</name>
+      <text>Mode:</text>
+      <x>10</x>
+      <y>41</y>
+      <width>110</width>
+      <font>
+        <font family="Source Sans Pro" style="BOLD" size="14.0">
+        </font>
+      </font>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="bool_button" version="2.0.0">
+      <name>butMode</name>
+      <pv_name>$(PREFIX):MODE:SP</pv_name>
+      <x>130</x>
+      <y>40</y>
+      <width>65</width>
+      <height>22</height>
+      <font>
+        <font family="Source Sans Pro" style="REGULAR" size="12.0">
+        </font>
+      </font>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>ledSerialNumberR</name>
+      <pv_name>$(PREFIX):MODE</pv_name>
+      <x>210</x>
+      <y>42</y>
+      <width>18</width>
+      <height>18</height>
+      <font>
+        <font family="Source Sans Pro" style="REGULAR" size="12.0">
+        </font>
+      </font>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>lblInternalTemp</name>
+      <text>Internal temp.:</text>
+      <x>10</x>
+      <y>91</y>
+      <width>110</width>
+      <font>
+        <font family="Source Sans Pro" style="BOLD" size="14.0">
+        </font>
+      </font>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>lblExternalTemp</name>
+      <text>External temp.:</text>
+      <x>10</x>
+      <y>116</y>
+      <width>110</width>
+      <font>
+        <font family="Source Sans Pro" style="BOLD" size="14.0">
+        </font>
+      </font>
+      <horizontal_alignment>2</horizontal_alignment>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>txtTempSetpoint_Rbv</name>
+      <pv_name>$(PREFIX):TEMP:SPHighest_SP:RBV</pv_name>
+      <x>260</x>
+      <y>66</y>
+      <width>110</width>
+      <font>
+        <font family="Source Sans Pro" style="REGULAR" size="12.0">
+        </font>
+      </font>
+      <vertical_alignment>1</vertical_alignment>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="led" version="2.0.0">
+      <name>ledExternalSensor</name>
+      <pv_name>$(PREFIX):EXTSENS</pv_name>
+      <x>260</x>
+      <y>118</y>
+      <width>18</width>
+      <height>18</height>
+      <font>
+        <font family="Source Sans Pro" style="REGULAR" size="12.0">
+        </font>
+      </font>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>txtTempSetpoint</name>
+      <pv_name>$(PREFIX):TEMP:SPHighest_SP</pv_name>
+      <x>130</x>
+      <y>66</y>
+      <width>110</width>
+      <font>
+        <font family="Source Sans Pro" style="REGULAR" size="12.0">
+        </font>
+      </font>
+      <background_color>
+        <color name="RED-TEXT" red="255" green="255" blue="255">
+        </color>
+      </background_color>
+      <wrap_words>true</wrap_words>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>txtInternalTemp</name>
+      <pv_name>$(PREFIX):TEMP</pv_name>
+      <x>130</x>
+      <y>91</y>
+      <width>110</width>
+      <font>
+        <font family="Source Sans Pro" style="REGULAR" size="12.0">
+        </font>
+      </font>
+      <background_color>
+        <color name="RED-TEXT" red="255" green="255" blue="255">
+        </color>
+      </background_color>
+      <wrap_words>true</wrap_words>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>txtExternalTemp</name>
+      <pv_name>$(PREFIX):EXTT</pv_name>
+      <x>130</x>
+      <y>116</y>
+      <width>110</width>
+      <font>
+        <font family="Source Sans Pro" style="REGULAR" size="12.0">
+        </font>
+      </font>
+      <background_color>
+        <color name="RED-TEXT" red="255" green="255" blue="255">
+        </color>
+      </background_color>
+      <wrap_words>true</wrap_words>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+    </widget>
+    <widget type="rectangle" version="2.0.0">
+      <name>rectStatus</name>
+      <x>10</x>
+      <y>425</y>
+      <width>410</width>
+      <height>90</height>
+      <line_width>2</line_width>
+      <line_color>
+        <color name="PRIMARY-DARK" red="31" green="83" blue="102">
+        </color>
+      </line_color>
+      <background_color>
+        <color red="255" green="255" blue="204">
+        </color>
+      </background_color>
+      <corner_width>10</corner_width>
+      <corner_height>10</corner_height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>lblStatus</name>
+      <text>Status</text>
+      <x>20</x>
+      <y>431</y>
+      <width>70</width>
+      <font>
+        <font family="Source Sans Pro" style="BOLD" size="14.0">
+        </font>
+      </font>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>txtStatus</name>
+      <pv_name>$(PREFIX):STATUS</pv_name>
+      <x>20</x>
+      <y>457</y>
+      <width>70</width>
+      <font>
+        <font family="Source Sans Pro" style="REGULAR" size="12.0">
+        </font>
+      </font>
+      <background_color>
+        <color red="255" green="255" blue="204">
+        </color>
+      </background_color>
+      <vertical_alignment>1</vertical_alignment>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+      <border_width>2</border_width>
+      <border_color>
+        <color name="ActiveText" red="254" green="194" blue="81">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>txtStatusC</name>
+      <pv_name>$(PREFIX):STATUSc</pv_name>
+      <x>100</x>
+      <y>457</y>
+      <width>310</width>
+      <font>
+        <font family="Source Sans Pro" style="REGULAR" size="12.0">
+        </font>
+      </font>
+      <background_color>
+        <color red="255" green="255" blue="204">
+        </color>
+      </background_color>
+      <vertical_alignment>1</vertical_alignment>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+      <border_width>2</border_width>
+      <border_color>
+        <color name="ActiveText" red="254" green="194" blue="81">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>txtStatusCc</name>
+      <pv_name>$(PREFIX):STATUScc</pv_name>
+      <x>100</x>
+      <y>484</y>
+      <width>310</width>
+      <font>
+        <font family="Source Sans Pro" style="REGULAR" size="12.0">
+        </font>
+      </font>
+      <background_color>
+        <color red="255" green="255" blue="204">
+        </color>
+      </background_color>
+      <vertical_alignment>1</vertical_alignment>
+      <border_alarm_sensitive>false</border_alarm_sensitive>
+      <border_width>2</border_width>
+      <border_color>
+        <color name="ActiveText" red="254" green="194" blue="81">
+        </color>
+      </border_color>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>btnMoreDetails</name>
+      <actions>
+        <action type="execute">
+          <script file="EmbeddedPy">
+            <text><![CDATA[# -----------------------------------------------------------------------------
+# Jython - CSStudio
+# -----------------------------------------------------------------------------
+# Wiener MPOD interface; procedure to toggle moreDetails local PV value
+#     days, hours, minutes...
+# -----------------------------------------------------------------------------
+# ESS ERIC - ICS HWI group
+# -----------------------------------------------------------------------------
+# DET  - anders.lindholsson@esss.se
+# WP12 - douglas.bezerra.beniz@esss.se
+# -----------------------------------------------------------------------------
+from org.csstudio.display.builder.runtime.script import PVUtil, ScriptUtil
+import sys, time, datetime
+from time import sleep
+
+# -----------------------------------------------------------------------------
+# class objects
+# -----------------------------------------------------------------------------
+logger = ScriptUtil.getLogger()
+# -----------------------------------------------------------------------------
+# procedures
+# -----------------------------------------------------------------------------
+def toggleProcedure():
+    try:
+        # -------------------------------------------------------------------------
+        # logical representation of PVs
+        # -------------------------------------------------------------------------
+        moreDetails = ScriptUtil.getPVs(widget)
+        #logger.info(str(moreDetails[0]))
+        if PVUtil.getInt(moreDetails[0]):
+                moreDetails[0].setValue(0)
+        else:
+                moreDetails[0].setValue(1)
+    except Exception as e:
+        logger.warning("Error! %s " % str(e))
+
+# -----------------------------------------------------------------------------
+# calling the main procedure
+# -----------------------------------------------------------------------------
+sleep(0.2)              # this was necessary because more than one procedure were being started, probably due to the period of scan of CSStudio thread
+toggleProcedure()]]></text>
+          </script>
+          <description>Toggle moreDetails local PV value</description>
+        </action>
+      </actions>
+      <pv_name>loc://moreDetails(0)</pv_name>
+      <text></text>
+      <x>400</x>
+      <y>41</y>
+      <width>20</width>
+      <height>20</height>
+      <font>
+        <font family="Source Sans Pro" style="BOLD" size="12.0">
+        </font>
+      </font>
+      <rules>
+        <rule name="Text" prop_id="text" out_exp="false">
+          <exp bool_exp="pv0==0">
+            <value>&gt;&gt;</value>
+          </exp>
+          <exp bool_exp="pv0==1">
+            <value>&lt;&lt;</value>
+          </exp>
+          <pv_name>loc://moreDetails(0)</pv_name>
+        </rule>
+      </rules>
+      <tooltip>Show more settings</tooltip>
+    </widget>
+    <widget type="group" version="2.0.0">
+      <name>Settings</name>
+      <x>420</x>
+      <y>35</y>
+      <width>357</width>
+      <height>490</height>
+      <foreground_color>
+        <color name="TEXT" red="25" green="25" blue="25">
+        </color>
+      </foreground_color>
+      <background_color>
+        <color name="GROUP-BACKGROUND" red="200" green="205" blue="201">
+        </color>
+      </background_color>
+      <rules>
+        <rule name="Visible" prop_id="visible" out_exp="false">
+          <exp bool_exp="pv0==0">
+            <value>false</value>
+          </exp>
+          <exp bool_exp="pv0==1">
+            <value>true</value>
+          </exp>
+          <pv_name>loc://moreDetails(0)</pv_name>
+        </rule>
+      </rules>
+      <widget type="led" version="2.0.0">
+        <name>ledExternalSensor2</name>
+        <pv_name>$(PREFIX):EXTSENS</pv_name>
+        <x>237</x>
+        <y>8</y>
+        <width>18</width>
+        <height>18</height>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="bool_button" version="2.0.0">
+        <name>butExternalSensor</name>
+        <pv_name>$(PREFIX):EXTSENS:SP</pv_name>
+        <x>157</x>
+        <y>6</y>
+        <width>65</width>
+        <height>22</height>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblUseExternalSensor</name>
+        <text>Use external sensor*:</text>
+        <x>9</x>
+        <y>7</y>
+        <width>138</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblUseExternalSensorInstruction</name>
+        <text>* Can only be set in OFF mode</text>
+        <y>31</y>
+        <width>309</width>
+        <font>
+          <font family="Source Sans Pro" style="ITALIC" size="14.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="textentry" version="3.0.0">
+        <name>txtHIghLimitSet</name>
+        <pv_name>$(PREFIX):HILIMIT:SP</pv_name>
+        <x>119</x>
+        <y>94</y>
+        <width>85</width>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <background_color>
+          <color name="RED-TEXT" red="255" green="255" blue="255">
+          </color>
+        </background_color>
+        <wrap_words>true</wrap_words>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="textupdate" version="2.0.0">
+        <name>txtHIghLimitRead</name>
+        <pv_name>$(PREFIX):HILIMIT</pv_name>
+        <x>213</x>
+        <y>94</y>
+        <width>85</width>
+        <height>18</height>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="textentry" version="3.0.0">
+        <name>txtLowLimitSet</name>
+        <pv_name>$(PREFIX):LOWLIMIT:SP</pv_name>
+        <x>119</x>
+        <y>114</y>
+        <width>85</width>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <background_color>
+          <color name="RED-TEXT" red="255" green="255" blue="255">
+          </color>
+        </background_color>
+        <wrap_words>true</wrap_words>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="textupdate" version="2.0.0">
+        <name>txtLowLimitRead</name>
+        <pv_name>$(PREFIX):LOWLIMIT</pv_name>
+        <x>213</x>
+        <y>114</y>
+        <width>85</width>
+        <height>18</height>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblHighLimitAlarm</name>
+        <text>High limit:</text>
+        <x>8</x>
+        <y>94</y>
+        <width>105</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <horizontal_alignment>2</horizontal_alignment>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblLowLimitAlarm</name>
+        <text>Low limit:</text>
+        <x>8</x>
+        <y>114</y>
+        <width>105</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <horizontal_alignment>2</horizontal_alignment>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblAlarmLimits</name>
+        <text>Alarm limits</text>
+        <x>9</x>
+        <y>71</y>
+        <width>119</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblTemperatures</name>
+        <text>Temperatures</text>
+        <x>9</x>
+        <y>162</y>
+        <width>119</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="textentry" version="3.0.0">
+        <name>txtExternalPT100</name>
+        <pv_name>$(PREFIX):EXTT</pv_name>
+        <x>119</x>
+        <y>185</y>
+        <width>85</width>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <background_color>
+          <color name="RED-TEXT" red="255" green="255" blue="255">
+          </color>
+        </background_color>
+        <wrap_words>true</wrap_words>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="textentry" version="3.0.0">
+        <name>txtTemperatureSafe</name>
+        <pv_name>$(PREFIX):TSAFE</pv_name>
+        <x>119</x>
+        <y>205</y>
+        <width>85</width>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <background_color>
+          <color name="RED-TEXT" red="255" green="255" blue="255">
+          </color>
+        </background_color>
+        <wrap_words>true</wrap_words>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblExternalPT100</name>
+        <text>External PT100:</text>
+        <x>8</x>
+        <y>185</y>
+        <width>105</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <horizontal_alignment>2</horizontal_alignment>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblTemperatureSafe</name>
+        <text>Safety sensor:</text>
+        <x>8</x>
+        <y>205</y>
+        <width>105</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <horizontal_alignment>2</horizontal_alignment>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblInternalPID</name>
+        <text>Internal PID parameters</text>
+        <x>9</x>
+        <y>253</y>
+        <width>289</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="textentry" version="3.0.0">
+        <name>txtInternalPSet</name>
+        <pv_name>$(PREFIX):INTP:SP</pv_name>
+        <x>119</x>
+        <y>276</y>
+        <width>85</width>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <background_color>
+          <color name="RED-TEXT" red="255" green="255" blue="255">
+          </color>
+        </background_color>
+        <wrap_words>true</wrap_words>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="textentry" version="3.0.0">
+        <name>txtInternalISet</name>
+        <pv_name>$(PREFIX):INTI:SP</pv_name>
+        <x>119</x>
+        <y>296</y>
+        <width>85</width>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <background_color>
+          <color name="RED-TEXT" red="255" green="255" blue="255">
+          </color>
+        </background_color>
+        <wrap_words>true</wrap_words>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblExternalPT100_1</name>
+        <text>Proportional (P):</text>
+        <x>8</x>
+        <y>276</y>
+        <width>105</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <horizontal_alignment>2</horizontal_alignment>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblTemperatureSafe_1</name>
+        <text>Integral (I):</text>
+        <x>8</x>
+        <y>296</y>
+        <width>105</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <horizontal_alignment>2</horizontal_alignment>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="textentry" version="3.0.0">
+        <name>txtInternalDSet</name>
+        <pv_name>$(PREFIX):INTD:SP</pv_name>
+        <x>119</x>
+        <y>316</y>
+        <width>85</width>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <background_color>
+          <color name="RED-TEXT" red="255" green="255" blue="255">
+          </color>
+        </background_color>
+        <wrap_words>true</wrap_words>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblTemperatureSafe_2</name>
+        <text>Derivative (D):</text>
+        <x>8</x>
+        <y>316</y>
+        <width>105</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <horizontal_alignment>2</horizontal_alignment>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="textupdate" version="2.0.0">
+        <name>txtInternalPRead</name>
+        <pv_name>$(PREFIX):INTP</pv_name>
+        <x>213</x>
+        <y>276</y>
+        <width>85</width>
+        <height>18</height>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="textupdate" version="2.0.0">
+        <name>txtInternalIRead</name>
+        <pv_name>$(PREFIX):INTI</pv_name>
+        <x>213</x>
+        <y>296</y>
+        <width>85</width>
+        <height>18</height>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="textupdate" version="2.0.0">
+        <name>txtInternalDRead</name>
+        <pv_name>$(PREFIX):INTD</pv_name>
+        <x>213</x>
+        <y>316</y>
+        <width>85</width>
+        <height>18</height>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblExternalPID</name>
+        <text>External PID parameters</text>
+        <x>9</x>
+        <y>364</y>
+        <width>289</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="textentry" version="3.0.0">
+        <name>txtExternalPSet</name>
+        <pv_name>$(PREFIX):EXTP:SP</pv_name>
+        <x>119</x>
+        <y>387</y>
+        <width>85</width>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <background_color>
+          <color name="RED-TEXT" red="255" green="255" blue="255">
+          </color>
+        </background_color>
+        <wrap_words>true</wrap_words>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="textentry" version="3.0.0">
+        <name>txtExternalISet</name>
+        <pv_name>$(PREFIX):EXTI:SP</pv_name>
+        <x>119</x>
+        <y>407</y>
+        <width>85</width>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <background_color>
+          <color name="RED-TEXT" red="255" green="255" blue="255">
+          </color>
+        </background_color>
+        <wrap_words>true</wrap_words>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblExternalPT100_2</name>
+        <text>Proportional (P):</text>
+        <x>8</x>
+        <y>387</y>
+        <width>105</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <horizontal_alignment>2</horizontal_alignment>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblTemperatureSafe_3</name>
+        <text>Integral (I):</text>
+        <x>8</x>
+        <y>407</y>
+        <width>105</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <horizontal_alignment>2</horizontal_alignment>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="textentry" version="3.0.0">
+        <name>txtExternalDSet</name>
+        <pv_name>$(PREFIX):EXTD:SP</pv_name>
+        <x>119</x>
+        <y>427</y>
+        <width>85</width>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <background_color>
+          <color name="RED-TEXT" red="255" green="255" blue="255">
+          </color>
+        </background_color>
+        <wrap_words>true</wrap_words>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="label" version="2.0.0">
+        <name>lblTemperatureSafe_4</name>
+        <text>Derivative (D):</text>
+        <x>8</x>
+        <y>427</y>
+        <width>105</width>
+        <font>
+          <font family="Source Sans Pro" style="BOLD" size="14.0">
+          </font>
+        </font>
+        <horizontal_alignment>2</horizontal_alignment>
+        <vertical_alignment>1</vertical_alignment>
+      </widget>
+      <widget type="textupdate" version="2.0.0">
+        <name>txtExternalPRead</name>
+        <pv_name>$(PREFIX):EXTP</pv_name>
+        <x>213</x>
+        <y>387</y>
+        <width>85</width>
+        <height>18</height>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="textupdate" version="2.0.0">
+        <name>txtExternalIRead</name>
+        <pv_name>$(PREFIX):EXTI</pv_name>
+        <x>213</x>
+        <y>407</y>
+        <width>85</width>
+        <height>18</height>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="textupdate" version="2.0.0">
+        <name>txtExternalDRead</name>
+        <pv_name>$(PREFIX):EXTD</pv_name>
+        <x>213</x>
+        <y>427</y>
+        <width>85</width>
+        <height>18</height>
+        <font>
+          <font family="Source Sans Pro" style="REGULAR" size="12.0">
+          </font>
+        </font>
+        <vertical_alignment>1</vertical_alignment>
+        <border_alarm_sensitive>false</border_alarm_sensitive>
+      </widget>
+      <widget type="polyline" version="2.0.0">
+        <name>Polyline</name>
+        <x>9</x>
+        <y>353</y>
+        <width>300</width>
+        <height>1</height>
+        <line_width>2</line_width>
+        <line_color>
+          <color name="BLACK-BORDER" red="121" green="121" blue="121">
+          </color>
+        </line_color>
+        <points>
+          <point x="0.0" y="0.0">
+          </point>
+          <point x="300.0" y="0.0">
+          </point>
+        </points>
+      </widget>
+      <widget type="polyline" version="2.0.0">
+        <name>Polyline_1</name>
+        <x>8</x>
+        <y>242</y>
+        <width>300</width>
+        <height>1</height>
+        <line_width>2</line_width>
+        <line_color>
+          <color name="BLACK-BORDER" red="121" green="121" blue="121">
+          </color>
+        </line_color>
+        <points>
+          <point x="0.0" y="0.0">
+          </point>
+          <point x="300.0" y="0.0">
+          </point>
+        </points>
+      </widget>
+      <widget type="polyline" version="2.0.0">
+        <name>Polyline_2</name>
+        <x>9</x>
+        <y>151</y>
+        <width>300</width>
+        <height>1</height>
+        <line_width>2</line_width>
+        <line_color>
+          <color name="BLACK-BORDER" red="121" green="121" blue="121">
+          </color>
+        </line_color>
+        <points>
+          <point x="0.0" y="0.0">
+          </point>
+          <point x="300.0" y="0.0">
+          </point>
+        </points>
+      </widget>
+      <widget type="polyline" version="2.0.0">
+        <name>Polyline_3</name>
+        <x>9</x>
+        <y>61</y>
+        <width>300</width>
+        <height>1</height>
+        <line_width>2</line_width>
+        <line_color>
+          <color name="BLACK-BORDER" red="121" green="121" blue="121">
+          </color>
+        </line_color>
+        <points>
+          <point x="0.0" y="0.0">
+          </point>
+          <point x="300.0" y="0.0">
+          </point>
+        </points>
+      </widget>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>lblErrors</name>
+      <text>Error messagens</text>
+      <x>100</x>
+      <y>431</y>
+      <width>310</width>
+      <font>
+        <font family="Source Sans Pro" style="BOLD" size="14.0">
+        </font>
+      </font>
+      <vertical_alignment>1</vertical_alignment>
+    </widget>
+  </widget>
+</display>
